@@ -1,5 +1,7 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import sanitzedConfig from "../config/config";
+import ClientController from "../controller/clients/clients.controller";
+import mongoConnection from "../database/mongo/connection";
 
 class Server {
     private readonly app;
@@ -10,11 +12,14 @@ class Server {
         this.port = sanitzedConfig.PORT;
         this.middlewares();
         this.router();
+        this.database();
     }
     router(){
-        this.app.post('/', (req:Request, res:Response) => {
-            res.send('ok');
-        });
+        const clientController = new ClientController();
+        this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/client`, clientController.getRouter());
+    }
+    database(){
+        mongoConnection();
     }
     middlewares(){
         this.app.use(express.json());

@@ -12,6 +12,7 @@ const getConfig = ():ENV => {
     return {
         PORT: process.env.PORT,
         MONGODB_SERVER: process.env.MONGODB_SERVER,
+        GLOBAL_PREFIX: process.env.GLOBAL_PREFIX
     }
 }
 
@@ -29,4 +30,3 @@ const config = getConfig();
 const sanitzedConfig = getSanitzedConfig(config);
 
 export default sanitzedConfig;
-
