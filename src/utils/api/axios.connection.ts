@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-const client = async (config:AxiosRequestConfig) => await axios(config);
+const client = async (config:AxiosRequestConfig) => axios(config);
 
 export default client;

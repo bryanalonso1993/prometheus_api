@@ -1,5 +1,4 @@
 import { Router, Request , Response} from "express";
-import { PokemonAbility } from "../../interface/pokemon.interface";
 import { PokemonService } from "../../service";
 
 
@@ -13,6 +12,7 @@ class PokemonController{
     }
     get(){
         this.router.get('/', (req:Request, res:Response) => this.pokemonService.getAbility(req, res));
+        this.router.get('/all', (req:Request, res:Response) => this.pokemonService.getAllPokemon(req, res));
     }
     post(){
         this.router.post('/', (req:Request, res:Response) => {
