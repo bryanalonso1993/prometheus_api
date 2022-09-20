@@ -1,10 +1,10 @@
-import express from "express";
+import express, { Express } from "express";
 import sanitzedConfig from "../config/config";
-import ClientController from "../controller/clients/clients.controller";
+import { PrometheusController, PokemonController } from "../controller";
 import mongoConnection from "../database/mongo/connection";
 
 class Server {
-    private readonly app;
+    private readonly app:Express;
     private port:string;
     constructor()
     {
@@ -15,8 +15,10 @@ class Server {
         this.database();
     }
     router(){
-        const clientController = new ClientController();
-        this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/client`, clientController.getRouter());
+        const pokemonController = new PokemonController();
+        const prometheusController = new PrometheusController();
+        this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/pokemon`, pokemonController.getRouter());
+        this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/prometheus`, prometheusController.getRouter());
     }
     database(){
         mongoConnection();
