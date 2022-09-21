@@ -1,11 +1,13 @@
 import client from "../../utils/api/axios.connection";
 import { Request, Response } from "express";
+import { pokemonSchema } from "../../database/mongo/schema/pokemon/pokemonSchema";
+import { Result } from "../../interface/pokemon.interface";
 
 class PokemonService {
 
     private readonly rootEndpoint='https://pokeapi.co/api/v2';
 
-    getAbility(req:Request, res:Response){
+    getAbility(req:Request, res:Response) {
         const { pokeName } = req.query;
         (async (pokeName) => {
             const options = {
@@ -21,7 +23,7 @@ class PokemonService {
         })(pokeName);
     }
 
-    getAllPokemon(req:Request, res:Response){
+    getAllPokemon(req:Request, res:Response) {
         (async () => {
             const options = {
                 method:'get',
@@ -36,7 +38,35 @@ class PokemonService {
         })();
     }
 
-    insertOrUpdatePokemon(req:Request, res:Response){}
+    insertPokemon(req:Request, res:Response) {
+        (
+            async () => {
+                const body:Result= req.body;
+                const register = new pokemonSchema(body);
+                await register.save();
+                try {
+                    return res.status(200).json({ data: 'Se registro correctamente' });
+                } catch (error) {
+                    return res.status(500).json({ error })
+                }
+            }
+        )();
+    }
+
+    insertAllPokemon(req:Request, res:Response) {
+        (
+            async () => {
+                const body:Result[] = req.body;
+                try {
+                    const response = await pokemonSchema.insertMany(body);
+                    console.log(response);
+                    return res.status(200).json({ data: 'Se registro correctamente' });
+                } catch (error) {
+                    return res.status(500).json({ error });
+                }
+            }
+        )();
+    }
 }
 
 export default PokemonService;

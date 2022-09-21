@@ -15,14 +15,11 @@ class PokemonController{
         this.router.get('/all', (req:Request, res:Response) => this.pokemonService.getAllPokemon(req, res));
     }
     post(){
-        this.router.post('/', (req:Request, res:Response) => {
-            res.send({ data:'ok' });
-        })
+        this.router.post('/insertPokemon', (req:Request, res:Response) => this.pokemonService.insertPokemon(req, res));
+        this.router.post('/insertAllPokemon', (req:Request, res:Response) => this.pokemonService.insertAllPokemon(req, res));
     }
     delete(){
-        this.router.delete('/', (req:Request, res:Response) => {
-            res.send({ data: 'eliminado '});
-        })
+        this.router.delete('/', (req:Request, res:Response) => res.send({ data: 'eliminado '}))
     }
     getRouter(){
         return this.router;
