@@ -1,7 +1,25 @@
 import express, { Express } from "express";
+/**
+ * Environments
+ */
 import sanitzedConfig from "../config/config";
-import { PrometheusController, PokemonController } from "../controller";
+/**
+ * Controladores
+ */
+import { PrometheusController, PokemonController, AuthenticationController } from "../controller";
+/**
+ * Conexiones a las base de datos
+ */
 import mongoConnection from "../database/mongo/connection";
+import connection from "../database/mariadb/connection";
+// Modelos de la Base de datos
+import "../database/mariadb/models";
+
+/**
+ * Logs Aplicacion
+ */
+import logger from "../utils/logging/logger";
+
 
 class Server {
     private readonly app:Express;
@@ -17,11 +35,16 @@ class Server {
     router(){
         const pokemonController = new PokemonController();
         const prometheusController = new PrometheusController();
+        const authenticationController = new AuthenticationController();
         this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/pokemon`, pokemonController.getRouter());
         this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/prometheus`, prometheusController.getRouter());
+        this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/authentication`, authenticationController.getRouter());
     }
     database(){
         mongoConnection();
+        connection.sync()
+            .then( () => logger('database', 'info', 'Success Connection ORM Sequelize') )
+            .catch( e => logger('database', 'error', `Error connect ORM Sequelize ${ e }`) );
     }
     middlewares(){
         this.app.use(express.json());
