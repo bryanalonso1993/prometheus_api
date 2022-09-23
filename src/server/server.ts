@@ -6,7 +6,7 @@ import sanitzedConfig from "../config/config";
 /**
  * Controladores
  */
-import { PrometheusController, PokemonController, AuthenticationController } from "../controller";
+import { PrometheusController, PokemonController, AuthenticationController, MariaDBController } from "../controller";
 /**
  * Conexiones a las base de datos
  */
@@ -36,9 +36,11 @@ class Server {
         const pokemonController = new PokemonController();
         const prometheusController = new PrometheusController();
         const authenticationController = new AuthenticationController();
+        const mariadbController = new MariaDBController();
         this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/pokemon`, pokemonController.getRouter());
         this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/prometheus`, prometheusController.getRouter());
         this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/authentication`, authenticationController.getRouter());
+        this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/mariadb`, mariadbController.getRouter());
     }
     database(){
         mongoConnection();

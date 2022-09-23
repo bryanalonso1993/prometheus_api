@@ -1,7 +1,4 @@
 import { Router, Request, Response, NextFunction } from "express";
-/**
- * Servicio
- */
 import { AuthenticationService } from "../../service";
 
 
@@ -17,9 +14,13 @@ class AuthenticationController{
             '/validateToken',
             (req:Request, res:Response, next:NextFunction) => this.authenticationService.validateToken(req, res, next)
         );
+        this.router.get(
+            '/responseToken',
+            (req:Request, res:Response) => this.authenticationService.responseToken(req, res)
+        );
     }
     post(){
-        this.router.post('/createToken', (req:Request, res:Response) => this.authenticationService.createTokenIfExists(req, res));
+        this.router.post('/createToken', (req:Request, res:Response) => this.authenticationService.createToken(req, res));
     }
     getRouter(){
         return this.router;
