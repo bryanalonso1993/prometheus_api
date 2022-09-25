@@ -3,7 +3,7 @@ import { DataTypes, Model } from "sequelize";
 
 class Interface extends Model {
     declare ipAddress: string;
-    declare interface: string;
+    declare interfaceName: string;
     declare max: number;
     declare min: number;
     declare endpoint: string;
@@ -16,7 +16,7 @@ Interface.init({
         type: DataTypes.STRING(255),
         allowNull: false
     },
-    interface: {
+    interfaceName: {
         type: DataTypes.STRING(255),
         allowNull: false
     },
