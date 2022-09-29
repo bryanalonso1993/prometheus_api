@@ -6,7 +6,7 @@ import sanitzedConfig from "../config/config";
 /**
  * Controladores
  */
-import { PrometheusController, AuthenticationController, MariaDBController } from "../controller";
+import { PrometheusController, AuthenticationController, MariaDBController, PMController } from "../controller";
 /**
  * Conexiones a las base de datos
  */
@@ -38,10 +38,11 @@ class Server {
     }
     router(){
         const [ prometheusController, authenticationController,
-                mariadbController ] = [ new PrometheusController(), new AuthenticationController(), new MariaDBController() ];
+                mariadbController, pmController ] = [ new PrometheusController(), new AuthenticationController(), new MariaDBController(), new PMController() ];
         this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/prometheus`, prometheusController.getRouter());
         this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/authentication`, authenticationController.getRouter());
         this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/mariadb`, mariadbController.getRouter());
+        this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/pm`, pmController.getRouter());
     }
     apm(){
         apm.start({

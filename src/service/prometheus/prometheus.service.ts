@@ -8,6 +8,7 @@ import axios from "axios";
 /**
  * Interfaces
  */
+import { Options } from "../../interface/global.interface";
 
 class PrometheusService {
     // Equipos aprovisionados en Prometheus
@@ -22,7 +23,7 @@ class PrometheusService {
      * Metodo para extraer los dispositivos monitoreados con Prometheus
      */
     async getDevices(req:Request, res:Response){
-        const options = {
+        const options:Options = {
             method: 'get',
             url: this.devicesPrometheus()
         }
@@ -46,7 +47,7 @@ class PrometheusService {
      */
     async getInterfaces(req:Request, res:Response){
         const { deviceName } = req.query as unknown as ReqQueryInterface;
-        const options = {
+        const options:Options = {
             method: 'get',
             url: this.interfacesPerDevice(deviceName)
         }
@@ -82,7 +83,7 @@ class PrometheusService {
         }
         // Ejecuta el metodo para multiples requests
         try {
-            const endpointResponse = await axios.all( concatOptions.map( opt => client(opt) ) );
+            const endpointResponse = await axios.all( concatOptions.map( (opt:Options) => client(opt) ) );
             let results:ResultTraffic[] = new Array();
             for ( const { data } of endpointResponse ) {
                 if ( data.result.length === 0 ) {

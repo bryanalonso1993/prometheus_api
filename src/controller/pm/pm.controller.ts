@@ -10,6 +10,9 @@ class PMController {
     get(){
         this.router.get('/', (req:Request, res:Response) => this.pmService.getDevicesInventory(req, res));
     }
+    getRouter(){
+        return this.router;
+    }
 }
 
 export default PMController;

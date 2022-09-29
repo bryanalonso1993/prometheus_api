@@ -1,14 +1,17 @@
 import { Request, Response } from "express";
 import sanitzedConfig from "../../config/config";
 import client from "../../utils/api/axios.connection";
-
+/**
+ * Interfaces
+ */
+import { Options } from "../../interface/global.interface";
 
 class PMService {
     async getDevicesInventory(req:Request, res:Response){
         const devicesPM = `${ sanitzedConfig.PM_SERVER }/odata/api/devices?$top=20000&$skip=0&$format=json`;
         const encodedBase64 = Buffer.from(`${ sanitzedConfig.USERNAME_API }:${ sanitzedConfig.PASSWORD_API }`).toString('base64');
         const authorization = `Basic ${ encodedBase64 }`;
-        const options = {
+        const options:Options = {
             method: 'get',
             url: devicesPM,
             withCredentials: true,
