@@ -13,6 +13,9 @@ export interface ENV {
     SEED: string | undefined;
     USERNAME_API: string | undefined;
     PASSWORD_API: string | undefined;
+    USERNAME_PM: string | undefined;
+    PASSWORD_PM: string | undefined;
+    PM_SERVER: string | undefined;
 }
 
 export interface Config {
@@ -30,4 +33,7 @@ export interface Config {
     SEED: string;
     USERNAME_API: string;
     PASSWORD_API: string;
+    USERNAME_PM: string;
+    PASSWORD_PM: string;
+    PM_SERVER: string;
 }

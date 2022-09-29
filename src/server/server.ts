@@ -19,7 +19,10 @@ import "../database/mariadb/models";
  * Logs Aplicacion
  */
 import logger from "../utils/logging/logger";
-
+/**
+ * APM Server
+ */
+import apm from "elastic-apm-node";
 
 class Server {
     private readonly app:Express;
@@ -28,6 +31,7 @@ class Server {
     {
         this.app = express();
         this.port = sanitzedConfig.PORT;
+        this.apm();
         this.middlewares();
         this.router();
         this.database();
@@ -38,6 +42,16 @@ class Server {
         this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/prometheus`, prometheusController.getRouter());
         this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/authentication`, authenticationController.getRouter());
         this.app.use(`${ sanitzedConfig.GLOBAL_PREFIX }/mariadb`, mariadbController.getRouter());
+    }
+    apm(){
+        apm.start({
+            serviceName: 'prometheus_api',
+            captureBody: 'all',
+            serverUrl: sanitzedConfig.APM_SERVER
+        });
+        if ( apm.isStarted() ) {
+            console.log('Running APM Server');
+        }
     }
     database(){
         mongoConnection();
@@ -50,7 +64,7 @@ class Server {
         this.app.use(express.urlencoded({ extended: true }));
     }
     listen(){
-        this.app.listen(this.port, () => console.log(`App runnig on port ${ this.port }`));
+        this.app.listen(this.port, () => console.log(`App running on port ${ this.port }`));
     }
 }
 

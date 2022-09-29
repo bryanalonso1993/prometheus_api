@@ -24,6 +24,9 @@ const getConfig = ():ENV => {
         SEED: process.env.SEED,
         USERNAME_API: process.env.USERNAME_API,
         PASSWORD_API: process.env.PASSWORD_API,
+        USERNAME_PM: process.env.USERNAME_PM,
+        PASSWORD_PM: process.env.PASSWORD_PM,
+        PM_SERVER: process.env.PM_SERVER,
     }
 }
 
