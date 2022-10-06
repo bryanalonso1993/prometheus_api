@@ -54,10 +54,14 @@ class MariaDBService {
      * Consulta para un dispositivo
      */
     async getDeviceID(req:Request, res:Response) {
-        const reqBody = req.body;
+        interface DeviceID {
+            ipAddress: string;
+        }
+        const reqBody = req.body as unknown as DeviceID[];
+        if ( reqBody.length == 0 ) return res.status(400).json({ Error: 'propiedades vacias' });
         let devices = new Array();
-        for ( const { ipAddress: name } of reqBody ) {
-            devices = [ ...devices, name ]
+        for ( const { ipAddress } of reqBody ) {
+            devices = [ ...devices, ipAddress ]
         }
         try {
             const register = await Device.findAll({
