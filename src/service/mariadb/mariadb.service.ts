@@ -1,6 +1,7 @@
 import { Device, Interface } from "../../database/mariadb/models";
 import {  DeleteDevice } from "../../interface/mariadb.interface";
 import { Request, Response } from "express";
+import apm from "elastic-apm-node";
 
 class MariaDBService {
     /**
@@ -9,10 +10,12 @@ class MariaDBService {
     async insertDevices(req:Request, res:Response) {
         const devices = req.body as any;
         try {
+            const start = apm.startTransaction('mariadb');
             const register = await Device.bulkCreate(devices, {
                 updateOnDuplicate: [ "deviceName", "category", "monitoring", "register", "enable" ],
                 ignoreDuplicates: true
             });
+            start?.end();
             return res.status(200).json({ message: "Success Update", date: register });
         } catch (error) {
             return res.status(500).json({ Error: error });

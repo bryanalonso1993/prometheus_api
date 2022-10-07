@@ -46,7 +46,7 @@ class Server {
     }
     apm(){
         apm.start({
-            serviceName: 'prometheus_api',
+            serviceName: 'api_semaforos',
             captureBody: 'all',
             serverUrl: sanitzedConfig.APM_SERVER
         });
@@ -55,7 +55,7 @@ class Server {
         }
     }
     database(){
-        mongoConnection();
+        /* mongoConnection(); */
         connection.sync()
             .then( () => logger('database', 'info', 'Success Connection ORM Sequelize') )
             .catch( e => logger('database', 'error', `Error connect ORM Sequelize ${ e }`) );

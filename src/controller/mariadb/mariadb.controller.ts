@@ -42,7 +42,7 @@ class MariaDBController {
     post(){
         this.router.post(
             '/device',
-            (req:Request, res:Response, next:NextFunction) => this.authenticationService.validateToken(req, res, next),
+            //(req:Request, res:Response, next:NextFunction) => this.authenticationService.validateToken(req, res, next),
             (req:Request, res:Response, next:NextFunction) => validateMultipleRequestDevices(req, res, next),
             (req:Request, res:Response) => this.mariadbService.insertDevices(req, res)
         );
